@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        .popup {
+            text-align: center;
+            padding: 20px;
+            margin: 0 auto;
+            width: 50%;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            margin: 20px auto;
+            display: table;
+            width: 100%;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .btn-container{
+            display: flex;
+            justify-content: center;
+        }
+        .close-btn{
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .accept-btn{
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-overlay" id="popup">
+        <div class="popup">
+            <h2>Order Details</h2>
+            <!-- Pickup Information -->
+            <div class="table-container">
+                <div class="section-title">Pick-Up Coordinates</div>
+                <table>
+                    <tr>
+                        <th>Latitude</th>
+                        <td>{{ order.pickup_latitude }}</td>
+                    </tr>
+                    <tr>
+                        <th>Longitude</th>
+                        <td>{{ order.pickup_longitude }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Dropoff Information -->
+            <div class="table-container">
+                <div class="section-title">Drop-Off Coordinates</div>
+                <table>
+                    <tr>
+                        <th>Latitude</th>
+                        <td>{{ order.dropoff_latitude }}</td>
+                    </tr>
+                    <tr>
+                        <th>Longitude</th>
+                        <td>{{ order.dropoff_longitude }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- User Information -->
+            <div class="table-container">
+                <div class="section-title">Orderer Information</div>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone Number</th>
+                        <td>{{ user.mobile }}</td>
+                    </tr>
+                    
+                </table>
+            </div>
+            <!-- <p><strong>Pickup Coordinates:</strong> Lat: {{ order.pickup_latitude }}, Lng: {{ order.pickup_longitude }}</p>
+            <p><strong>Dropoff Coordinates:</strong> Lat: {{ order.dropoff_latitude }}, Lng: {{ order.dropoff_longitude }}</p>
+            <p><strong>User Email:</strong> {{ order.user.email }}</p>
+            <p><strong>Phone Number:</strong> {{ order.user.phone_number }}</p> -->
+            <div class="btn-container">
+                <form action="/order_nevigate/{{order.id}}">
+                    <button class="accept-btn"> Nevigate </button>
+                </form>
+                <form action="/pro_dashboard/">
+                    <button class="close-btn" onclick="closePopup()">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>

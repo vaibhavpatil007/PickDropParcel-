@@ -1,0 +1,238 @@
+{% include "header.html" %}
+<body>
+    <div class="dashboard-container" onclick="closeMenu(event)">
+        <!-- Hidden Menu (User Information) -->
+        <nav class="user-menu">
+            <button class="menu-toggle" onclick="toggleMenu(event)">☰</button>
+            <div class="menu-content" id="menu">
+                <div class="user-info">
+                    <img src="\static\user_icon.svg" alt="User Icon" class="user-icon">
+                    <h3>{{user_name}}</h3>
+                    <p>Email: {{user_email}}</p>
+                    <p>Mobile: {{user_mobile}}</p>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Booking Form -->
+        <div class="booking-form">
+            <h2>Book Your Drone Delivery</h2>
+            <form  method="POST">
+                {% csrf_token %}
+                <label for="pickup">Pick-Up Point:</label>
+                <input type="text" id="pickup" name="pickup" placeholder="Enter pick-up point" required>
+                <!-- {% if suggestions_pickup %}
+                    <ul>
+                        {% for suggestion in suggestions_pickup %}
+                            <li>{{ suggestion }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %} -->
+                <label for="dropoff">Drop-Off Point:</label>
+                <input type="text" id="dropoff" name="dropoff" placeholder="Enter drop-off point" required>
+                <!-- {% if suggestions_dropoff %}
+                <ul>
+                        {% for suggestion in suggestions_dropoff %}
+                            <li>{{ suggestion }}</li>
+                        {% endfor %}
+                    </ul>
+
+                {% endif %} -->
+                
+                <label for="weight">Parcel Weight (kg):</label>
+                <input type="number" id="weight" name="weight" placeholder="Enter weight" required>
+                
+                <button type="submit" class="btn">Get Drone</button>
+            </form>
+            
+        </div>
+        <!-- Show the calculated distance -->
+        <!-- {% if distance %}
+            <div class="distance">
+                <h3>Distance: {{ distance }} km</h3>
+            </div>
+        {% endif %} -->
+
+        <!-- Previous Orders Section -->
+        <div class="previous-orders">
+            <h2>Previous Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Pick-Up</th>
+                        <th>Drop-Off</th>
+                        <th>Weight</th>
+                        <th>Distance (km)</th>
+                        <th>Total Payment</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in data_view %}
+                    <tr>
+                        <td>{{order.id}}</td>
+                        <td>{{order.pickup}}({{order.pickup_latitude}},{{order.pickup_longitude}})</td>
+                        <td>{{order.dropoff}}({{order.dropoff_latitude}},{{order.dropoff_longitude}})</td>
+                        <td>{{order.weight}}</td>
+                        <td>10 km</td>
+                        <td>$50</td>
+                        <td>Delivered</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">No previous orders found</td>
+                    </tr>
+                    {% endfor %}
+                    <!-- Add more order rows as needed -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Live Drone Tracking (Optional) -->
+        <!-- <div class="live-tracking">
+            <h2>Live Drone Tracking</h2>
+            <div class="map">
+                <p>Map showing current drone location...</p>
+            </div>
+        </div> -->
+        <div class="live-tracking">
+            <h2>Route</h2>
+            <div id="map" style="height: 500px;"></div>
+        </div>
+    </div>
+
+    <script>
+        function fetchSuggestions(field) {
+            const input = document.getElementById(field).value;
+            if (input.length > 2) {
+                fetch(`/get_suggestions/?field=${field}&query=${input}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let suggestionBox = document.getElementById(`${field}-suggestions`);
+                        suggestionBox.innerHTML = ''; // Clear previous suggestions
+                        data.suggestions.forEach(suggestion => {
+                            let li = document.createElement('li');
+                            li.textContent = suggestion;
+                            li.onclick = () => {
+                                document.getElementById(field).value = suggestion;
+                                suggestionBox.innerHTML = ''; // Clear the suggestion box after selection
+                            };
+                            suggestionBox.appendChild(li);
+                        });
+                    });
+            }
+        }
+    </script>
+    <script>
+        function toggleMenu(event) { 
+            event.stopPropagation(); // Prevents closing the menu immediately after opening
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('active');
+        }
+
+        function closeMenu(event) {
+            const menu = document.getElementById('menu');
+            const button = document.querySelector('.menu-toggle');
+
+            // Close the menu if the click is outside the menu and not on the button
+            if (!menu.contains(event.target) && !button.contains(event.target)) {
+                menu.classList.remove('active');
+            }
+        }
+        
+    </script>
+                                     <!-- map -->
+    <div id="map"></div>
+    <script>
+        function initMap() {
+          var pickupPoint = { lat: 20.9237835, lng: 74.8188257 };  // Pickup Point
+          var dropoffPoint = { lat: 20.9176811, lng: 74.7816825 }; // Drop-off Point
+
+       
+
+          // Calculate midpoint for centering the map
+          var midLat = (pickupPoint.lat + dropoffPoint.lat) / 2;
+          var midLng = (pickupPoint.lng + dropoffPoint.lng) / 2;
+          var mapCenter = { lat: midLat, lng: midLng };
+  
+          var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 14,  // Adjust zoom level to focus on the route
+            center: mapCenter, // Center the map based on the midpoint
+          });
+  
+          // Create Pickup Marker
+          var pickupMarker = new google.maps.Marker({
+            position: pickupPoint,
+            map: map,
+            title: "Pickup Point",
+          });
+  
+          // Create Dropoff Marker
+          var dropoffMarker = new google.maps.Marker({
+            position: dropoffPoint,
+            map: map,
+            title: "Drop-off Point",
+          });
+  
+          // Coordinates for the flight path (curved line)
+          var flightPlanCoordinates = [
+            pickupPoint,
+            dropoffPoint
+          ];
+  
+          // Polyline for the flight path
+          var flightPath = new google.maps.Polyline({
+            path: flightPlanCoordinates,
+            geodesic: false, // Set to true to make the line curved (geodesic)
+            strokeColor: "#0080FF",
+            strokeOpacity: 1.0,
+            strokeWeight: 4
+          });
+  
+          flightPath.setMap(map);
+        }
+      </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0pvx9_vqb5cldihZ1afusn6ByVsGUBw&callback=initMap">
+    </script>
+
+    <script>
+        function getCoordinates(event) {
+            event.preventDefault();  // Prevent the form from submitting immediately
+    
+            var geocoder = new google.maps.Geocoder();
+            var pickupAddress = document.getElementById('pickup').value;
+            var dropoffAddress = document.getElementById('dropoff').value;
+    
+            // Geocode pickup address
+            geocoder.geocode({ 'address': pickupAddress }, function(results, status) {
+                if (status === 'OK') {
+                    var pickupLat = results[0].geometry.location.lat();
+                    var pickupLng = results[0].geometry.location.lng();
+                    document.getElementById('pickup-lat').value = pickupLat;
+                    document.getElementById('pickup-lng').value = pickupLng;
+    
+                    // Geocode drop-off address
+                    geocoder.geocode({ 'address': dropoffAddress }, function(results, status) {
+                        if (status === 'OK') {
+                            var dropoffLat = results[0].geometry.location.lat();
+                            var dropoffLng = results[0].geometry.location.lng();
+                            document.getElementById('dropoff-lat').value = dropoffLat;
+                            document.getElementById('dropoff-lng').value = dropoffLng;
+    
+                            // Submit the form after both coordinates are obtained
+                            document.getElementById('booking-form').submit();
+                        } else {
+                            alert('Drop-off address not found: ' + status);
+                        }
+                    });
+                } else {
+                    alert('Pickup address not found: ' + status);
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>

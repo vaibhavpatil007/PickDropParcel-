@@ -1,0 +1,178 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+}
+nav .logo{
+    margin: 0;
+  font-size: 1.5em;
+}
+.nav-links {
+    list-style-type: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin-right: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+.nav-links a:hover{
+    color: #1E90FF;
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    cursor: pointer;
+    color: white;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #4B4B4B;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+  }
+  
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 1em;
+  }
+  
+  .dropdown-content a:hover {
+    color: #1E90FF;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 100px 20px;
+    /* background-color: #1b77d2; */
+    background-image: url('/static/Background.png');
+    /* color: white; */
+}
+.hero h1{
+    color: rgb(3, 248, 244);
+    font-size: 2em;
+}
+.hero p{
+    color: white;
+}
+.animation-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.drone-img {
+    width: 100px;
+    animation: flyDrone 10s infinite;
+}
+
+.parcel-img{
+    width: 50px;
+    height: 50px;
+    background-image: url('static/parcel.png'); /* Make sure this path is correct */
+    background-size: cover; /* Ensure the image covers the entire area */
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: dropParcel 5s infinite;
+}
+
+@keyframes flyDrone {
+    0% { transform: translateX(-100px); }
+    50% { transform: translateX(300px); }
+    100% { transform: translateX(600px); }
+}
+
+@keyframes dropParcel {
+    0%, 100% { bottom: 50px; }
+    50% { bottom: 10px; }
+}
+
+/* Features Section */
+.features {
+    padding: 60px 20px;
+    background-color: white;
+    text-align: center;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+}
+
+.step {
+    width: 20%;
+    padding: 20px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+h3 {
+    color: #007bff;
+}
+
+/* Dashboard Section */
+.dashboard {
+    padding: 60px 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.kpis {
+    display: flex;
+    justify-content: space-around;
+}
+
+.kpi {
+    width: 30%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.kpi p {
+    font-size: 24px;
+    color: #28a745;
+}

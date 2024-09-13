@@ -1,0 +1,132 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickDrop Professional Dashboard</title>
+    <link rel="stylesheet" href="/static/pro_dashboard_style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    
+</head>
+
+<body>
+    <div class="container">
+        
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <h1>Professionals Dashboard</h1>
+            <ul>
+                <li><a href="#new-orders">New Orders</a></li>
+                <li><a href="#order-map">Drone Navigation</a></li>
+                <li><a href="#drone-status">Drone Operations</a></li>
+                <li><a href="http://127.0.0.1:8000/home/">Home</a></li>
+            </ul>
+        </nav>
+
+        <!-- New Orders Section -->
+        <section id="new-orders">
+            <h2>New Orders</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Pick-Up Point</th>
+                        <th>Drop-Off Point</th>
+                        <th>Parcel Weight</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in data_view %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.pickup }}</td>
+                        <td>{{ order.dropoff }}</td>
+                        <td>{{ order.weight }} kg</td>
+                        <td>
+                            <form method='POST' action="/order_accept/{{order.id}}/" style="display:inline">
+                                {% csrf_token %}
+                                <button  class="btn-accept"  type="submit" data-order-id="{{ order.id }}" name="accept">Accept</button>
+                            </form>
+                            <form method='POST' action="/order_reject/{{order.id}}/" style="display:inline">
+                                {% csrf_token %}
+                                <button class="btn-reject" type="submit" data-order-id1="{{ order.id }}" name="reject">Reject</button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Map Section for Drone Navigation -->
+        <section id="order-map">
+            <h2>Drone Navigation</h2>
+            <div id="map" style="height: 400px;"></div>
+        </section>
+
+        <!-- Drone Operations Section -->
+        <section id="drone-status">
+            <h2>Drone Operations</h2>
+            <div class="drone-controls">
+                <button class="btn-pickup">Pick Up Parcel</button>
+                <button class="btn-dropoff">Drop Off Parcel</button>
+                <p>Current Drone Status: <span id="drone-status-display">Idle</span></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Include necessary scripts -->
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([20.930667, 74.763348], 14);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Example coordinates for pick-up and drop-off locations
+        var pickupCoordinates = [20.930667, 74.763348]; // Change to actual pick-up coordinates
+        var dropoffCoordinates = [20.888101, 74.769625]; // Change to actual drop-off coordinates
+
+        // Add markers for the pick-up and drop-off points
+        var pickupMarker = L.marker(pickupCoordinates).addTo(map)
+            .bindPopup('Pick-Up Point').openPopup();
+        var dropoffMarker = L.marker(dropoffCoordinates).addTo(map)
+            .bindPopup('Drop-Off Point').openPopup();
+
+        // Draw a line (path) between pick-up and drop-off points
+        var latlngs = [
+            pickupCoordinates,
+            dropoffCoordinates
+        ];
+        var polyline = L.polyline(latlngs, {color: 'blue'}).addTo(map);
+
+        // Adjust the view to fit the markers
+        map.fitBounds(polyline.getBounds());
+    </script>
+    
+    <!-- Pop up for accept order  -->
+    <script>
+        function openOrderPopup(orderId) {
+            // Make an AJAX request to the order_accept view
+            fetch(`/order_accept/${orderId}/`, {
+                method: 'GET',
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Create a div to show the popup
+                const popupContainer = document.createElement('div');
+                popupContainer.innerHTML = html;
+                document.body.appendChild(popupContainer);
+    
+                // Show the popup
+                document.getElementById("popup").style.display = "flex";
+            });
+        }
+    </script>
+</body>
+</html>

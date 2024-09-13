@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickDropParcel</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Header and Navbar -->
+    <header>
+        <div class="logo">
+            <h1>PickDropParcel</h1>
+        </div>
+        <nav class="navbar">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Register</a>
+                <div class="dropdown-content">
+                    <a href="#">PickDrop Users</a>
+                    <a href="#">PickDrop Professionals</a>
+                </div>
+            </div>
+            <a href="#">Login</a>
+            
+        </nav>
+    </header>
+
+    <!-- Main Section -->
+    <main>
+        <section class="intro-section">
+            {% csrf_token %}
+            <div class="intro-text">
+                <h2>Efficient parcel pick-up and drop services with our fleet of drones.</h2>
+                <p>We provide fast and reliable drone-based delivery solutions to ensure your parcels reach their destination quickly and safely. Book a delivery now!</p>
+            </div>
+            <div class="booking-card">
+                <form>
+                    <input type="text" placeholder="Name" required>
+                    <input type="tel" placeholder="Mobile number" required>
+                    <input type="text" placeholder="Pick-up point" required>
+                    <input type="text" placeholder="Drop-off point" required>
+                    <button type="submit">Get Quote</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Drone Tracking Window -->
+        <!-- <section class="tracking-window">
+            <h3>Live Drone Tracking</h3>
+            <div class="map-container"> -->
+                <!-- Map goes here -->
+                <!-- <p>Interactive drone map will be displayed here.</p> -->
+            </div>
+        </section>
+    </main>
+</body>
+</html>

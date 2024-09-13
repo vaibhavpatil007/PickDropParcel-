@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Parcel Service</title>
+    <link rel="stylesheet" href="/static/home_style.css">
+    <link rel="stylesheet" href="/static/header_style.css">
+    <link rel="stylesheet" href="/static/user_registration.css">
+    <link rel="stylesheet" href="/static/pro_style.css">
+    <link rel="stylesheet" href="/static/user_dashboard_style.css">
+    <link rel="stylesheet" href="/static/pro_login_style.css">
+    
+    <!-- <link rel="stylesheet" href="/static/pro_dashboard_style.css"> -->
+
+    
+    <!-- <link rel="stylesheet" href="/static/login_style.css"> -->
+</head>
+<!-- <head>
+    <link rel="stylesheet" href="/static/pro_dashboard.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+</head> -->
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">PickDropParcel</div>
+        <ul class="nav-links">
+            <li><a href="http://127.0.0.1:8000/home/">Home</a></li>
+            <li><a href="http://127.0.0.1:8000/login/">Login</a></li>
+            <li><a href="http://127.0.0.1:8000/pro_login/">Professionals Login</a></li>
+
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Register</a>
+                <div class="dropdown-content">
+                    <a href="http://127.0.0.1:8000/user_registration">PickDrop Users</a>
+                    <a href="http://127.0.0.1:8000/pro_registration">PickDrop Professionals</a>
+                </div>
+                
+            </div>
+            <li><a href="#dashboard"> View Dashboard</a></li>
+        </ul>
+    </nav>

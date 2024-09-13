@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Planning Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="\static\fly_style.css">
+    <style>
+        .table-container {
+            margin: 20px auto;
+            display: table;
+            width: 100%;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Sidebar for drone route options -->
+    <div class="sidebar">
+        <h3>Drone Planning</h3>
+        <!-- Input for Latitude and Longitude to focus the map -->
+        <div class="focus-coords">
+            <label>Latitude: <input type="number" id="latInput" placeholder="Enter Latitude"></label>
+            <label>Longitude: <input type="number" id="lngInput" placeholder="Enter Longitude"></label>
+            <button id="focusMap">Focus Map</button>
+        </div>
+        <hr>
+        <!-- Drone Connection Checklist -->
+        <!-- <div class="drone-connection">
+            <h4>Coordinates</h4>
+            <ul id="droneList">
+                <li><input type="checkbox" id="drone1">{{ order.pickup_latitude }} </li>
+                <li><input type="checkbox" id="drone2">{{ order.pickup_longitude }} </li>
+                <li><input type="checkbox" id="drone3">{{ order.pickup }} To {{ order.dropoff }} </li>
+            </ul>
+            <button id="connectDrone">Connect to Selected Drone</button>
+        </div> -->
+        <!-- table -->
+         <!-- Pickup Information -->
+         <div class="table-container">
+            <div class="section-title">Pick-Up Coordinates</div>
+            <table>
+                <tr>
+                    <th>Latitude</th>
+                    <td>{{ order.pickup_latitude }}</td>
+                </tr>
+                <tr>
+                    <th>Longitude</th>
+                    <td>{{ order.pickup_longitude }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Dropoff Information -->
+        <div class="table-container">
+            <div class="section-title">Drop-Off Coordinates</div>
+            <table>
+                <tr>
+                    <th>Latitude</th>
+                    <td>{{ order.dropoff_latitude }}</td>
+                </tr>
+                <tr>
+                    <th>Longitude</th>
+                    <td>{{ order.dropoff_longitude }}</td>
+                </tr>
+            </table>
+        </div>
+        <button id="connectMarker" data-order-id="{{ order.id }}">Get Markers</button>
+        <hr>
+        <div class="button-bar"> 
+            <!-- Button to add marker -->
+            <button id="addMarker">Add Marker</button><br/><br/>
+            <!-- Button to fly the drone -->
+            <button id="flyDrone">Fly Drone</button>
+            
+        </div>
+    </div>
+
+    <script src="\static\fly_js.js"></script>
+</body>
+</html>

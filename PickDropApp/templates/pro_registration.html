@@ -1,0 +1,59 @@
+{% include "header.html" %}
+<body>
+    <div class="container">
+        <div class="register-form">
+            <h2>Register as Drone Operator/User</h2>
+            <form  method="POST">
+                {% csrf_token %}
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <!-- Mobile -->
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+                </div>
+                <!-- Specialization -->
+                <div class="form-group">
+                    <label for="specialization">Specialization</label>
+                    <select id="specialization" name="specialization">
+                        <option value="delivery">Delivery</option>
+                        <option value="surveillance">Surveillance</option>
+                        <option value="photography">Photography</option>
+                        <option value="mapping">Mapping</option>
+                    </select>
+                </div>
+                <!-- Drone Type -->
+                <div class="form-group">
+                    <label for="drone_type">Drone Type</label>
+                    <input type="text" id="drone_type" name="drone_type" placeholder="Enter the drone type" required>
+                </div>
+                <!-- Load Capacity -->
+                <div class="form-group">
+                    <label for="load_capacity">Load Capacity (in kg)</label>
+                    <input type="number" id="load_capacity" name="load_capacity" placeholder="Enter load capacity" required>
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="Enter your location" required>
+                </div>
+                <!-- Register Button -->
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
