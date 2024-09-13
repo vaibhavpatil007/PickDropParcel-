@@ -1,4 +1,4 @@
-**PickDropParcel**
+
 ![Screenshot 2024-09-13 105202](https://github.com/user-attachments/assets/7842a22e-ff16-461e-b7ce-e0b17fa73718)
 
 PickDropParcel is a drone-based delivery system that provides a seamless experience for users to book a drone, have their parcels picked up, and delivered to their specified location. The project focuses on efficient parcel handling, real-time tracking, and safety measures, with all operations performed by professional drone operators.
