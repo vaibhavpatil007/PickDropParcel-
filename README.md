@@ -23,7 +23,7 @@ Clone the repository:
 
 bash
 Copy code
-git clone https://github.com/yourusername/pickdropparcel.git
+git clone https://github.com/vaibhavpatil007/PickDropParcel-
 Install the required dependencies:
 
 bash
